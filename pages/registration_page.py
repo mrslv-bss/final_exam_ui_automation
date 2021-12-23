@@ -3,6 +3,7 @@ from libs.basic import click, send_keys
 from testdata.testdata import first_name, last_name
 from pages.main_page import sign_in_button_loc, avatar_login_loc
 import json
+import allure
 
 
 create_account_button_loc = (By.XPATH, "//a[contains(text(), 'Create a new account')]")
@@ -16,6 +17,8 @@ register_email_error_alert_loc = (By.XPATH, "//li[contains(text(), 'Email has al
 register_email_error_alert_second__loc = (By.XPATH, "//li[contains(text(), 'Email is invalid')]")
 
 
+@allure.feature('User registration functionality')
+@allure.story('Credentials taking from cred.json, the F/L names from testdata')
 def registration(get_driver, user):
     click(get_driver, sign_in_button_loc)
     click(get_driver, create_account_button_loc)
@@ -27,9 +30,12 @@ def registration(get_driver, user):
     send_keys(get_driver, register_password_loc, credentials[user]['password'])
     click(get_driver, register_terms_checkbox_loc)
     click(get_driver, register_sign_up_button_loc)
-    alert_check = get_driver.find_elements(*register_email_error_alert_loc)
-    assert len(alert_check) == 0, "Already taken"
-    alert_check = get_driver.find_elements(*register_email_error_alert_second__loc)
-    assert len(alert_check) == 0, "Invalid email"
-    login_status_check = get_driver.find_elements(*avatar_login_loc)
-    assert len(login_status_check), "Unsuccessful register"
+    with allure.step('Email already taken | Registration'):
+        alert_check = get_driver.find_elements(*register_email_error_alert_loc)
+        assert len(alert_check) == 0, "Already taken"
+    with allure.step('Email have invalid format | Registration'):
+        alert_check = get_driver.find_elements(*register_email_error_alert_second__loc)
+        assert len(alert_check) == 0, "Invalid email"
+    with allure.step('Something wrong (unsuccessful register). Probably captcha | Registration'):
+        login_status_check = get_driver.find_elements(*avatar_login_loc)
+        assert len(login_status_check), "Unsuccessful register"

@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from libs.basic import send_keys, click
+import allure
 
 
 search_field_loc = (By.XPATH, "//input[@type='search']")
@@ -15,6 +16,7 @@ def search_course(get_driver, text):
     send_keys(get_driver, search_field_loc, Keys.ENTER)
 
 
+@allure.feature('Find all courses on CURRENT page')
 def find_page_elements(get_driver):
     item_text_list = []
     page_elements = get_driver.find_elements(*items_loc)
@@ -23,6 +25,7 @@ def find_page_elements(get_driver):
     return item_text_list
 
 
+@allure.feature('Search keyword (testdata) inside course title')
 def check_result_case(get_driver, config_name):
     """
     1. Search Any course
@@ -33,5 +36,6 @@ def check_result_case(get_driver, config_name):
     while len(get_driver.find_elements(*next_page_button_loc)) > 0:
         click(get_driver, next_page_button_loc)
         elements.append(find_page_elements(get_driver))
-        for title in elements:
-            assert config_name.upper() in title, title
+        with allure.step('Keyword not in a course title'):
+            for title in elements:
+                assert config_name.upper() in title, title
