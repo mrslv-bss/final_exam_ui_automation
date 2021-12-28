@@ -6,9 +6,9 @@ Testing scope:
 Test Data:
 1. cred.json
     * user_name
-        > test_email
-        > test_pass
-        > test_remember_checkbox
+        1. test_email
+        2. test_pass
+        3. test_remember_checkbox
 2. testdata\testdata.py
     * url - Application for testing
     * words_for_search - Courses keywords for search during testing
@@ -18,14 +18,15 @@ Test Data:
 Tests:
 1. tests\test_file.py
     * test_main(get_driver, config_name, user_name)
-        > config_name necessary for 'check_result_case()'
-        > user_name necessary for 'login()' and 'registration()'
-    1. For correct work of 'registration()' case, comment @pytest.mark.parametrize("config_name"...
-    Because of registration process must be single for each user.
-    2. 'Login()' and 'Registration()' can't work together.
+        1. config_name necessary for 'check_result_case()'
+        2. user_name necessary for 'login()' and 'registration()'
+      1. For correct work of 'registration()' case, comment @pytest.mark.parametrize("config_name"...
+      Because of registration process must be single for each user.
+      2. 'Login()' and 'Registration()' can't work together.
 
     * test_no_result_case(get_driver, user_name)
-        > user_name necessary for 'login()'
+        1. user_name necessary for 'login()'
+    
     'non_exist_case()' case keep unchangeable text for search non-exist course ('NON_EXISTING_COURSE_NAME')
 
 Pages:
@@ -33,8 +34,8 @@ Pages:
     * login(get_driver, user)
     Load credentials from 'cred.json', fill the required fields and click 'Sign In'
     There are 2 asserts for errors:
-        > For Invalid email or password
-        > For Unsuccessful login (the page hasn't changed)
+         1. For Invalid email or password
+         2. For Unsuccessful login (the page hasn't changed)
     Allure is present.
 2. pages\main_page.py
     * find_page_elements(get_driver)
@@ -42,7 +43,7 @@ Pages:
     * check_result_case(get_driver, config_name)
     Search keyword (config_name) in course title, change pages if exist more than one
     There are one assert:
-        > For Keyword not in a course title
+        1. For Keyword not in a course title
     * search_course(get_driver, text)
     Search course name by (text)
     Allure is present.
@@ -50,9 +51,9 @@ Pages:
     * registration(get_driver, user)
     Load credentials from 'cred.json' and 'testdata\testdata.py', fill the required fields and click 'Sign Up'
     There are 3 asserts for errors:
-        > For Already taken email
-        > For Invalid format email
-        > For Unsuccessful register (the page hasn't changed)
+        1. For Already taken email
+        2. For Invalid format email
+        3. For Unsuccessful register (the page hasn't changed)
    Allure is present.
 4. pages\search_page.py
     * non_exist_case(get_driver)
