@@ -11,7 +11,7 @@ from libs.basic import start
 @pytest.mark.parametrize("user_name", user_names)
 def test_main(get_driver, config_name, user_name):
     start(get_driver)
-    # registration(get_driver, user_name)
+    registration(get_driver, user_name) # Registration and login must be separately
     # login(get_driver, user_name)
     check_result_case(get_driver, config_name)
 
